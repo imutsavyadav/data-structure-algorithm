@@ -1,0 +1,44 @@
+// Reverse Stack 
+// using only one stack through recursion 
+
+#include<bits/stdc++.h> 
+using namespace std ; 
+
+void insertAtBottom(stack <int> &st , int ele){
+    if(st.empty()){
+      st.push(ele);
+      return ;
+    }
+    int topele = st.top();
+    st.pop();
+    insertAtBottom(st ,ele);
+    st.push(topele);
+}
+
+void Reverse(stack <int> &st){
+  // base case 
+  if(st.empty())
+    return ; 
+  int ele = st.top();
+  st.pop();
+  Reverse(st);
+
+  insertAtBottom(st , ele);
+}
+
+int main(){
+  stack <int> st; 
+  st.push(5) ;
+  st.push(4) ;
+  st.push(3) ;
+  st.push(2) ;
+  st.push(1) ;
+  
+
+   Reverse(st);
+
+   while(!st.empty()){
+    cout << st.top() << " ";
+    st.pop();
+   }
+}

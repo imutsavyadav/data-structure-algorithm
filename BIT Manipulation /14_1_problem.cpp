@@ -22,13 +22,13 @@ int main (){
      // Program 1 
       
     // Method 1:- As we all know just devide the no. by as at last remainder is zero or not
-    // Method 2:- This is nothing but we trace pattern of the binary no. as such 
+    // Method 2:- This is nothing but we trace pattern of binary no. as such 
         // firstly if we know a no. n=6 (0110) than from its 
-        // right most setBIT we interchange 0 and and then be get
+        // right most setBIT we interchange 0 and 1 then be get
         // binary form of its n-1 no. (means of 5 (0101) )
 
         // secondly if we do & operation b/w n and n-1 then the coming 
-        // ans has same bit as n except the right most bit .
+        // ans has same bit as n except right most bit .
 
         // the 2^n types of no like N = 8 (1000) , 16 (10000) also represent as 1<<n 
         // take N-1 of that no. is 7 (0111) , 15 (01111) 
@@ -38,7 +38,9 @@ int main (){
  
     // Program 2 
      
-     // for count the total no. for one we constantly take the and operation b/w  n and n-1 so from the right all set bit become uset and and be count this operation as time it run is the ans of the set bit in the binary no.
+     // for count total no. for one we constantly take 
+     // and operation b/w  n and n-1 so from right all set bit become uset 
+     // and be count this operation as time it run is ans of  set bit in binary no.
 
         cout<< numberOfsetBIT(7);
 

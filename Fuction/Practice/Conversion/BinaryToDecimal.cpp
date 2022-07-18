@@ -72,7 +72,7 @@ cout<< decimalToBinary(d);
      if not than we use the while lopp.
 */
 
-// here we know that the seze of the string . so use the  for loop
+// here we know that the size of the string . so use the  for loop
 
    /*
       1 C F  this the hexadecimal number so in decimal

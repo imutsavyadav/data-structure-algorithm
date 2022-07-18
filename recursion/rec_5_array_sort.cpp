@@ -1,3 +1,4 @@
+// check whether the given array is sorted or not?
 #include<iostream>
 using namespace std;
 // arr[0]< arr[1] and remaining send to rec 

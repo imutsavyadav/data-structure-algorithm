@@ -49,6 +49,7 @@ int main(){
             row_start++;
 
            // column end -----  r1(m-1) r2(m-1) r3(m-1) r4(m-1) r5(m-1).... r(n-1)(m-1)
+           // row is varying and column is fixed and move toward end row from currnet row_start
 
         for (int row = row_start; row <= row_end; row++)
         {
@@ -58,6 +59,7 @@ int main(){
             col_end--;
 
             // row end ----- r(n-1)(m-2) r(n-1)(m-3) r(n-1)(m-4) r(n-1)(m-5)..... r(n-1)(0)
+            // row is fixed which is end row and column is varing from end to start.
 
         for (int col = col_end; col >=col_start ; col--)
         {
@@ -67,6 +69,7 @@ int main(){
             row_end--;
 
             // column start ------ r()
+            // column is fixed as col_start and row is varing from row_end to row_start
 
         for (int row = row_end; row >= row_start; row--)
         {
