@@ -21,10 +21,10 @@ int subsetSum(int arr[] ,int n , int sum){
 int main(){ 
 	int n ; // size of arr 
 	cin >> n  ; 
-	int arr[n];
-	for(int & i : arr) cin>> i ; 
+	vector<int>arr;
+	for(int i : arr) cin>> i ; 
  	int sum =0; 
- 	for(int  &i : arr) sum+=i  ;
+ 	for(int  i : arr) sum+=i  ;
  	vector<int>ans;
  	for(int i = 0 ; i<=sum/2 ; i++){
  		if(subsetSum(arr,n,i))

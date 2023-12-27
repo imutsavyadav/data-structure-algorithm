@@ -1,151 +1,216 @@
-#include<bits/stdc++.h>
-using namespace std ; 
-// problem on dynamic programing 
-// flow 
-// 0 - 1 knapSack  -> problem statemet , identification , simmilarity , code
-// total 6 variation on the 0 - 1 knapsack 
-// 1 -> subset sum problem 
-// 2 -> equal sum porblem 
-// 3 -> count subset sum problem 
+#include <bits/stdc++.h>
+#define ll          long long
+#define vl          vector<ll>
+#define vi          vector<int>
+#define pi          pair<int,int>
+#define pl          pair<ll,ll>
+#define all(a)      a.begin(),a.end()
+#define mem(a,x)    memset(a,x,sizeof(a))
+#define pb          push_back
+#define mp          make_pair
+#define F           first
+#define S           second
+#define FOR(i,a)    for(int i = 0; i < a; i++)
+#define trace(x)    cerr<<#x<<" : "<<x<<endl;
+#define trace2(x,y) cerr<<#x<<" : "<<x<<" | "<<#y<<" : "<<y<<endl;
+#define trace3(x,y,z) cerr<<#x<<" : "<<x<<" | "<<#y<<" : "<<y<<" | "<<#z<<" : "<<z<<endl;
+#define fast_io     std::ios::sync_with_stdio(false),cin.tie(NULL),cout.tie(NULL)
+ 
+using namespace std;
+int inf=1e9+7, MOD=1e9+7;
 
-int knapSackRec(int wt[] , int val[] , int W, int n);
+int w = 1;
 
-int kanpSackMem(int wt[], int val[] , int W , int n);
+struct Tree{
+    public :
+        bool isLocked;
+        bool isLockable;
+        int id;
+        int ma;
+        Tree* p;
+        vector<Tree*> c; 
+        Tree(){
+            isLocked = false;
+            isLockable = true;
+            id = -1;
+            ma = w++;
+            p = NULL;
+        }
+        Tree(Tree* parent){
+            isLocked = false;
+            isLockable = true;
+            id = -1;
+            ma = w++;
+            p = parent;
+        }
+};
+        // bool ll(Tree* n) return n->l;
 
-int knapSackTop(int wt[] , int val[] ,int W, int n);
+        bool locking(Tree* n, int uuid){
+            if(n->isLockable == false || (n->isLocked)) return false;
+            Tree* T = n;
+            queue<Tree*> q;
+            q.push(T);
+            while(!q.empty()){
+                Tree* temp = q.front();
+                q.pop();
+                for(auto x: temp->c){
+                    if(x->isLocked) return false;
+                    q.push(x);
+                }
+            }
+            n->id = uuid;
+            n->isLocked = true;
+            q.push(T);
+            while(!q.empty()){
+                Tree* temp = q.front();
+                q.pop();
+                for(auto x: temp->c){
+                    x->isLockable = false;
+                    q.push(x);
+                }
+            }
+            return true;
+        }
+        
+        bool unlocking(Tree* n,int uuid){
+            if(n->isLockable == false || n -> isLocked == false || (n->isLocked && uuid != n->id)) return false;
+            Tree* T = n;
+            n->isLocked= false;
+            n->id = -1;
+            queue<Tree*> q;
+            q.push(T);
+            while(!q.empty()){
+                Tree* temp = q.front();
+                q.pop();
+                for(auto x: temp->c){
+                    x->isLockable = true;
+                    q.push(x);
+                }
+            }
+            return true;
+        }
+
+        bool update(Tree* n,int uuid){
+            if(n->isLockable == false || n->isLocked == true) return false;
+            Tree* T = n;
+            queue<Tree*> q;
+            q.push(T);
+            bool f = false;
+            while(!q.empty()){
+                Tree* temp = q.front();
+                q.pop();
+                for(auto x: temp->c){
+                    if(x->isLocked == true && x->id != uuid) { return false; }
+                    if(x->isLocked) f = true;
+                    q.push(x);
+                }
+            }
+            if(!f) return false;
+            // n->isLocked =  true;
+            // n->id = uuid;
+            // queue<Tree*> q;
+            q.push(T);
+            while(!q.empty()){
+                Tree* temp = q.front();
+                q.pop();
+                for(auto x: temp->c){
+                    if(x->isLocked){
+                        // x->isLocked = false;
+                        if(!unlocking(x,uuid)) return false;
+                    }
+                    q.push(x);
+                }
+            }
+            // locking(n,uuid);
+            return locking(n,uuid);
+        }
+
+        void Print(Tree* n){
+            queue<Tree*> q;
+            q.push(n);
+            // cout << n->ma <<"\n";
+            while(!q.empty()){
+                Tree* temp = q.front();
+                q.pop();
+                for(auto x: temp->c){
+                    cout << temp->ma << " -> " << x->ma << " ";
+                }
+            }
+        }
+
+unordered_map<string, Tree*> sToT;
+
 
 int main(){
-    // recurcive code for 0-1 knapSack
-    // step 1 :- base condintion -> think about the samlest or largest valid i/p
-    // step 2 :- choice diagram -> code the chice diagram 
-
-    // input of the knapsack funtion.
-    int n ;  cin>> n; 
-    // size of the array 
-    // which have to property 
-    // 1-> weight array 
-    // 2-> value array  
-    int wt[n];
-    int val[n];
-
-   
-    // capacity of the knapSack 
+    int n,m,q;
+    cin >> n >> m >>q;
+    // adj.resize(n+1,vector<int>());
+    // nuid.resize(n+1,-1);
+    // p.resize(n+1,-1);
+    // intime.resize(n+1,-1);
+    // outtime.resize(n+1,-1);
+    // p[1]=1;
+    // int x = n/m;
+    // for(int k = 1; k <= x; k++){
+    //     for(int l = 1; l <= m; l++){
+    //         adj[k].pb(m*(k-1)+l+1);
+    //         p[m*(k-1)+l+1] = k;
+    //     }
+    // }
+    // FOR(i,adj.size()) {
+    //     FOR(j,p.size()) cout << j << " " <<p[j] <<" "; 
+    //     cout <<"\n";
+    // }
     
-    for(int i = 0 ; i< n ; i++){
-        cin>> wt[i];
-    }
-    for(int i  = 0 ; i< n ;i++){
-        cin >> val[i];
-    }
-     int W ; cin>>W;
+    Tree* t = new Tree(); 
+    string d;
+    cin >> d;
 
-   cout << knapSackRec(wt,val,W,n);
-}
-
-// return the max profit fit in the capacity of the knapSack W 
-int knapSackRec(int wt[] , int val[] , int W, int n){
-     // base condtion 
-     if(n==0 || W==0){
-         // no item in the array have profit is zero.
-         // with no capacity of kanpSack the profit is zero.
-         return 0 ; 
-     }
-
-     // choice diagram code
-     // move from the last index and check 
-     // 1 -> wt of the last item is less then of equal to Capcity W or not
-     // 2 -> if it is than have two choice include that item or not inclucde that item 
-     // 3 -> if not than item is not included in the knapSack.
-
-     if(wt[n-1]<=W){
-         // include or not include
-         return max(val[n-1]+knapSackRec(wt,val,W-wt[n-1],n-1),knapSackRec(wt,val,W,n-1));
-     }
-     else{
-         return knapSackRec(wt,val,W,n-1);
-     }
-     
-}
-
-int kanpSackMem(int wt[], int val[] , int W , int n){
-    // just simply two line of code in the recursive code 
-    // to memorise it 
-    // DP = Rec code + Storage --> memorisation technique
-
-    // for storage we create a matrix t[n+1][W+1]
-    // to store value of subproblem which used in future subproblem with same input
-    // input of the matrix is the changabel input in the recursive code
-    // and initialize all the value of matrix with -1 
-
-    vector< vector<int> >t(n+1,vector<int>(W+1,-1));
-
-   // same base condition in the rec code
-
-   if(n==0 || W==0){
-       return 0 ; 
-   }
-   
-   // check that particular value is previously calculated or not
-
-   if(t[n][W]!=1){
-       return t[n][W];
-   }
-
-    if(wt[n-1]<=W){
-         // include or not include
-          t[n][W] = max(val[n-1]+kanpSackMem(wt,val,W-wt[n-1],n-1),kanpSackMem(wt,val,W,n-1));
-     }
-     else{
-          t[n][W] = kanpSackMem(wt,val,W,n-1);
-     }
-
-     return t[n][W];
-
-}
-
-int knapSackTop(int wt[] , int val[] ,int W, int n){
-    // this is also called the real DP 
-    // here we totaly omit the recurcive call 
-
-    // conversion of rec code  to top down code
-    // step 1: ->  base cond change to initialization of matrix 
-    // step 2: ->  choice digram fucntion call change to matrix value
-
-    // here matrix is same as the memoriation case but with special property
-    // means particular value subproblem answer store in the particular cell
-
-    // final answer is the last cell of the matrix is t[n][W]
-
-    vector< vector<int> >t(n+1,vector<int>(W+1,-1));
-
-    // intialization :-> by the help of nested for loop 
-    //                   n convert with i -> indexes of array
-    //                   W convert with j -> Capacity of the knapSack
-
-    for(int i = 0 ; i< n ; i++){
-        for(int j = 0 ; j< W ; j++){
-            if(i==0 || j==0){
-                t[i][j]=0;
-            }
+    // a.c.push_back(&t);
+    sToT[d] = t;
+    queue<Tree*> queue;
+    queue.push(t);
+    int k = 1;
+    while(!queue.empty()){
+        auto temp = queue.front();
+        queue.pop();
+        // cout << temp->ma <<"\n";
+        while(k < n && (int)temp->c.size() < m){
+            string s;
+            cin >> s;
+            // cout << s <<"\n";
+            Tree* u = new Tree(temp);
+            sToT[s] = u;
+            temp->c.push_back(u);
+            queue.push(u);
+            k++;
+            // cout << s <<" "<<sToT[s]->ma <<"\n";
         }
     }
-
-    // choice diagram code :-> by the help of nested for loop 
-    //                         code for all subproblem answer value 
-    //                         start with index 1 in i and j
-
-    for(int i = 1 ; i< n ; i++){
-        for(int j = 1 ; j< W ;j++){
-            if(wt[i-1]<=j){
-                // include or not include
-                t[i][j] = max( val[i-1]+t[i-1][j-wt[i-1]] , t[i-1][j] );
-            }
-            else{
-                t[i][j] = t[i-1][j];
-            }
+    // Print(t);
+    // dfs(1);
+    FOR(i,q) {
+        int qn,uuid;
+        string name;
+        bool ans;
+        cin >> qn >> name >> uuid;
+        if(qn == 1){
+            ans = locking(sToT[name],uuid);
+            // cout << name<<" "<< sToT[name]->id << " " << uuid << "\n";
         }
+        else if(qn == 2){
+            ans = unlocking(sToT[name],uuid);
+            // cout << name<<" "<< sToT[name]->id << " " << uuid << "\n";
+        }
+        else {
+            ans = update(sToT[name],uuid);
+            // cout << ans << "\n";
+        }
+        // FOR(j,nuid.size()) cout << j << " " << nuid[j] <<" ";
+        // cout <<"\n";
+        if(ans) cout << "true\n";
+        else cout << "false\n";
     }
-
-    return t[n][W];
-
+    return 0;
 }

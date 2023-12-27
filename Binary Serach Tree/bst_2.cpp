@@ -63,9 +63,6 @@ int main (){
    root=constructBST(preorder , &preIdx , preorder[0] , INT_MIN , INT_MAX , n);
 
     printPreOrder(root);
-
-    
-
 }
 
 

@@ -74,8 +74,6 @@ sort(arr, arr+3);
 
 
 
-
-
 int main() {
 
 	// max size of 10^6 -> int, double, char  

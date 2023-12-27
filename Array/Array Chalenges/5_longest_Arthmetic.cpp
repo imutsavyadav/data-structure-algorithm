@@ -9,7 +9,7 @@ int main(){
 	// input of an array 
 	int n ; cin>>n ; 
 	int arr[n]; 
-  vector<vector<int>> ans ;
+  vector<vector<int> > ans ;
 	for(int i = 0 ; i<n ; i++) 
 		cin >> arr[i];
 

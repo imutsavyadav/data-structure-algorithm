@@ -1,0 +1,54 @@
+// Topic: std::async 
+
+// Notes:
+// 1. It runs a function asynchronously (potentially in a new thread) and return a std:: future that 
+// 		will hodl the result. 
+// 2. There are three launch policies for creating task:
+// 		a. std::launch::async
+//		b. std::launch::deffered
+//		c. std::launch::async | std::launch::asynch
+
+// How It works 
+// 1. It automatically creates a thread (Or picks from internal thread pool ) and a promise object for us.
+// 2. Then passes hte std::Promis object to thread funciton and returns the associcated std::future object.
+// 3. When our passed argument function exits then its value will be set in this pomise object.
+// 		so eventually return value will be avaiballe in std::future object.
+
+// SIDE NOTES 
+// 1. We dan send fucntor and lamda function as callback to std::async, it will work the same.
+
+// Program: 
+
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <algorithm>
+#include <future>
+
+using namespace std ; 
+using namespace std::chrono ; 
+typedef long int ull ; 
+
+ull findOdd(ull start , ull end){
+	ull OddSum = 0 ; 
+	for(ull i = start ; i <= end ; i++){
+		if(i & 1 ){
+			OddSum +=i ;
+		}
+	}
+	return OddSum ;
+}
+
+int main(){
+	ull start = 0 , end = 190000000000;
+
+	cout << "Thread cread if policy is std::launchasync!!" << endl;
+	std::future<ull> OddSum = std::async(std::launch::deffered , findOdd , start , end);
+
+	cout << "waiting for Result !!" << endl;
+	cout << "OddSum: " << OddSum.get() << endl;
+
+	cout << "Completed!!" << endl;
+	return 0 ; 
+}
+

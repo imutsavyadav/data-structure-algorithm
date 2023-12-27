@@ -61,9 +61,7 @@ class node{
     else
    root->right = buildBst(val , root->right);
 
-     return root ; 
-
-
+     return root ;
 }
 
 
