@@ -5,7 +5,7 @@ using namespace std;
 // subset sum problem -> the particular sum 
 // exist in the array or not
 // direct using dp 
-int subsetSum(int arr[] ,int n , int sum){
+int subsetSum(vector<int>arr ,int n , int sum){
 	// initialization part 
 	if(n==0  && sum == 0 )
 		return 1;
