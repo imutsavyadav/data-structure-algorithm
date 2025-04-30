@@ -44,7 +44,7 @@ node* reverseLinkedlist_2(node*&head){
 //--------------------------reverse the k no. of nodes in the linked list ------------
 // test case :- 1->2->3->4->5->6 and k = 2 
 // solution :-  2->1->4->3->6->5
-// concept :-  here we first use the itrative approach to reverse the first k node of the linked list
+// concept :-  here we first use the itrative approach to reverse the first k node of the linked lisht
 //............... then we call the recursivly for the next k node think in the mind or just imagine or use 
 // ................ the paper for the traverseing that which pointer is where when the itrative work done
 node* reverseKnode(node* head , int k ){

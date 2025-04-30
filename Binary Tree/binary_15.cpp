@@ -38,8 +38,6 @@
       if(left) return left;
 
       return right ; 
-
-
   }
 
 // find the distance of the node throught the lca node . 
